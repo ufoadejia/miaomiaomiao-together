@@ -1,0 +1,47 @@
+server {
+  listen 80;
+  server_name example.com;
+
+  location = /dish {
+    return 301 /dish/;
+  }
+
+  location = /dish/ {
+    root /opt/miaomiaomiao-together/web/dist;
+    try_files /index.html =404;
+    add_header Cache-Control "no-cache";
+  }
+
+  location = /dish/index.html {
+    root /opt/miaomiaomiao-together/web/dist;
+    try_files /index.html =404;
+    add_header Cache-Control "no-cache";
+  }
+
+  location ^~ /dish/assets/ {
+    alias /opt/miaomiaomiao-together/web/dist/assets/;
+    access_log off;
+    expires 30d;
+    add_header Cache-Control "public, max-age=2592000, immutable";
+  }
+
+  location ^~ /dish/ {
+    root /opt/miaomiaomiao-together/web/dist;
+    try_files /index.html =404;
+  }
+
+  location /dish-api/ {
+    proxy_pass http://127.0.0.1:3002/dish-api/;
+    proxy_http_version 1.1;
+    proxy_set_header Host $host;
+    proxy_set_header X-Real-IP $remote_addr;
+    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    proxy_set_header X-Forwarded-Proto $scheme;
+  }
+
+  location /dish-uploads/ {
+    alias /var/lib/dish-rank/uploads/;
+    access_log off;
+    expires 30d;
+  }
+}

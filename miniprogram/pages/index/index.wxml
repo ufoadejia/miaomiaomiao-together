@@ -1,7 +1,7 @@
 <wxs src="/utils/format.wxs" module="fmt" />
 <view class="container">
   <view class="announcement-bar" wx:if="{{announcement}}">
-    <view class="announcement-icon">📢</view>
+    <view class="announcement-icon">NEWS</view>
     <view class="announcement-content">
       <text class="announcement-text">{{announcement}}</text>
     </view>
@@ -30,6 +30,24 @@
       <text class="stat-value">{{fmt.formatNumber(reputationStats.count)}}</text>
       <text class="stat-label">人气榜单</text>
     </view>
+  </view>
+
+  <view class="dish-guide" bindtap="goToDishes">
+    <view class="dish-guide-copy">
+      <text class="dish-guide-kicker">CAMPUS FLAVOR GUIDE</text>
+      <text class="dish-guide-title">食堂风味榜</text>
+      <text class="dish-guide-subtitle">{{currentSchool.name || '北京信息科技大学'}}</text>
+    </view>
+    <view class="dish-guide-action">进入</view>
+  </view>
+
+  <view class="paper-guide" bindtap="goToNewspaper">
+    <view class="paper-guide-copy">
+      <text class="paper-guide-kicker">DAILY PAPER</text>
+      <text class="paper-guide-title">校园食报</text>
+      <text class="paper-guide-subtitle">左右滑动翻阅纸质版阅读页</text>
+    </view>
+    <view class="paper-guide-fold"></view>
   </view>
 
   <scroll-view scroll-x class="canteen-tabs" enhanced show-scrollbar="{{false}}">
@@ -81,7 +99,7 @@
   </view>
 
   <view class="suggestion-btn" bindtap="goToSuggestion">
-    <text class="suggestion-icon">💡</text>
+    <text class="suggestion-icon">MAIL</text>
     <text class="suggestion-text">提建议</text>
   </view>
 
@@ -98,7 +116,7 @@
         <view class="school-picker-close" bindtap="closeSchoolPicker">✕</view>
       </view>
       <view class="school-search-box">
-        <text class="search-icon">🔍</text>
+        <text class="search-icon">FIND</text>
         <input class="school-search-input" 
                placeholder="搜索学校名称或简称" 
                value="{{schoolSearchKeyword}}"
@@ -144,7 +162,7 @@
   <view class="result-modal" wx:if="{{showResultModal}}">
     <view class="modal-mask" bindtap="closeResultModal"></view>
     <view class="modal-card">
-      <view class="modal-icon">🎉</view>
+      <view class="modal-icon">TODAY</view>
       <view class="modal-title-text">今天就吃这个！</view>
       
       <view class="result-box">
@@ -163,7 +181,7 @@
       </view>
       
       <view class="copy-btn" bindtap="copyResult">
-        <text class="copy-icon">📋</text>
+        <text class="copy-icon">COPY</text>
         <text>复制结果</text>
       </view>
       

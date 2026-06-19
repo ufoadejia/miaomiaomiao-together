@@ -1,3 +1,5 @@
+const api = require('../../utils/api')
+
 Page({
   data: {
     content: '',
@@ -26,17 +28,14 @@ Page({
     this.setData({ submitting: true })
 
     try {
-      const res = await wx.cloud.callFunction({
-        name: 'canteenService',
-        data: {
+      const res = await api.callFunction({
           action: 'submitSuggestion',
           data: {
             type: '建议',
             content: this.data.content.trim(),
             contact: this.data.contact.trim()
           }
-        }
-      })
+        })
 
       if (res.result && res.result.success) {
         wx.showToast({

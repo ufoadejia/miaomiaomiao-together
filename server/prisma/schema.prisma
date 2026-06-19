@@ -1,0 +1,172 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum DishStatus {
+  PENDING
+  ACTIVE
+  OFFLINE
+  REJECTED
+}
+
+enum AdminRole {
+  MASTER
+  SCHOOL
+}
+
+model User {
+  id        String   @id @default(cuid())
+  openid    String   @unique
+  nickname  String?
+  avatarUrl String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  dishes  Dish[]
+  ratings Rating[]
+}
+
+model School {
+  id           String   @id @default(cuid())
+  legacyId     String?  @unique
+  name         String
+  abbr         String
+  admin        String?
+  passwordHash String?
+  order        Int      @default(1000)
+  status       Int      @default(1)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  canteens      Canteen[]
+  dishes        Dish[]
+  categories    Category[]
+  announcements Announcement[]
+  adminSessions AdminSession[]
+
+  @@index([order, createdAt])
+}
+
+model Canteen {
+  id        String   @id @default(cuid())
+  schoolId  String
+  school    School   @relation(fields: [schoolId], references: [id], onDelete: Cascade)
+  name      String
+  order     Int      @default(1000)
+  floors    Json     @default("[]")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  dishes Dish[]
+
+  @@index([schoolId, order])
+  @@unique([schoolId, name])
+}
+
+model Category {
+  id        String   @id @default(cuid())
+  schoolId  String?
+  school    School?  @relation(fields: [schoolId], references: [id], onDelete: Cascade)
+  name      String
+  order     Int      @default(1000)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  dishes Dish[]
+
+  @@unique([schoolId, name])
+  @@index([schoolId, order])
+}
+
+model Dish {
+  id          String     @id @default(cuid())
+  schoolId    String?
+  school      School?    @relation(fields: [schoolId], references: [id], onDelete: SetNull)
+  categoryId  String?
+  category    Category?  @relation(fields: [categoryId], references: [id], onDelete: SetNull)
+  canteenId   String?
+  canteen     Canteen?   @relation(fields: [canteenId], references: [id], onDelete: SetNull)
+  uploaderId  String?
+  uploader    User?      @relation(fields: [uploaderId], references: [id], onDelete: SetNull)
+  name        String
+  shopName    String?
+  floorName   String?
+  description String?
+  imageUrl    String?
+  status      DishStatus @default(ACTIVE)
+  avgScore    Float      @default(0)
+  scoreSum    Int        @default(0)
+  ratingCount Int        @default(0)
+  lastRatedAt DateTime?
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+
+  ratings Rating[]
+
+  @@index([schoolId, status])
+  @@index([categoryId])
+  @@index([avgScore, ratingCount])
+}
+
+model Rating {
+  id        String   @id @default(cuid())
+  dishId    String
+  dish      Dish     @relation(fields: [dishId], references: [id], onDelete: Cascade)
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  score     Int
+  comment   String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([dishId, userId])
+  @@index([dishId])
+  @@index([userId])
+}
+
+model Announcement {
+  id        String   @id @default(cuid())
+  schoolId  String?
+  school    School?  @relation(fields: [schoolId], references: [id], onDelete: Cascade)
+  content   String
+  active    Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([schoolId, active])
+}
+
+model AdminSession {
+  id        String    @id @default(cuid())
+  tokenHash String    @unique
+  role      AdminRole
+  schoolId  String?
+  school    School?   @relation(fields: [schoolId], references: [id], onDelete: Cascade)
+  expiresAt DateTime
+  createdAt DateTime  @default(now())
+
+  @@index([schoolId])
+  @@index([expiresAt])
+}
+
+model Suggestion {
+  id        String   @id @default(cuid())
+  type      String   @default("建议")
+  content   String
+  contact   String?
+  createdAt DateTime @default(now())
+}
+
+model UsageStat {
+  id        String   @id @default(cuid())
+  scope     String   @unique
+  schoolId  String?
+  date      String?
+  count     Int      @default(0)
+  updatedAt DateTime @updatedAt
+}

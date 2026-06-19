@@ -1,5 +1,5 @@
 page {
-  background-color: #1a1a2e;
+  background-color: #e9e3d6;
   min-height: 100vh;
 }
 
@@ -30,11 +30,11 @@ page {
 }
 
 .quick-entry {
-  background-color: #16213e;
+  background-color: #f7f4ec;
   border-radius: 16rpx;
   padding: 24rpx;
   margin-bottom: 30rpx;
-  border: 2rpx solid #4fc3f7;
+  border: 2rpx solid #b31921;
 }
 
 .quick-entry-title {
@@ -48,30 +48,30 @@ page {
   justify-content: space-between;
   align-items: center;
   padding: 20rpx 24rpx;
-  background-color: #1a1a2e;
+  background-color: #e9e3d6;
   border-radius: 12rpx;
 }
 
 .quick-entry-text {
   font-size: 30rpx;
-  color: #4fc3f7;
+  color: #b31921;
   font-weight: bold;
 }
 
 .quick-entry-arrow {
   font-size: 28rpx;
-  color: #4fc3f7;
+  color: #b31921;
 }
 
 .stats-section {
-  background-color: #16213e;
+  background-color: #f7f4ec;
   border-radius: 16rpx;
   padding: 24rpx;
   margin-bottom: 30rpx;
 }
 
 .school-section {
-  background-color: #16213e;
+  background-color: #f7f4ec;
   border-radius: 16rpx;
   padding: 24rpx;
   margin-bottom: 30rpx;
@@ -121,7 +121,7 @@ page {
 
 .add-btn {
   font-size: 26rpx;
-  color: #4fc3f7;
+  color: #b31921;
   padding: 8rpx 20rpx;
   background-color: rgba(79, 195, 247, 0.1);
   border-radius: 8rpx;
@@ -129,14 +129,14 @@ page {
 
 .refresh-btn {
   font-size: 24rpx;
-  color: #4fc3f7;
+  color: #b31921;
   padding: 6rpx 16rpx;
   background-color: rgba(79, 195, 247, 0.1);
   border-radius: 6rpx;
 }
 
 .global-stats {
-  background-color: #1a1a2e;
+  background-color: #e9e3d6;
   border-radius: 12rpx;
   padding: 24rpx;
   margin-bottom: 16rpx;
@@ -161,13 +161,13 @@ page {
 .global-stats-divider {
   width: 2rpx;
   height: 80rpx;
-  background-color: #2d3a5a;
+  background-color: #111111;
 }
 
 .global-stats-value {
   font-size: 48rpx;
   font-weight: bold;
-  color: #4fc3f7;
+  color: #b31921;
 }
 
 .global-stats-label {
@@ -184,7 +184,7 @@ page {
 
 .stats-card {
   width: calc(50% - 8rpx);
-  background-color: #1a1a2e;
+  background-color: #e9e3d6;
   border-radius: 12rpx;
   padding: 20rpx;
   box-sizing: border-box;
@@ -213,7 +213,7 @@ page {
 .stats-value {
   font-size: 36rpx;
   font-weight: bold;
-  color: #4fc3f7;
+  color: #b31921;
 }
 
 .stats-label {
@@ -225,7 +225,7 @@ page {
 .stats-divider {
   width: 2rpx;
   height: 50rpx;
-  background-color: #2d3a5a;
+  background-color: #111111;
 }
 
 .school-list {
@@ -236,7 +236,7 @@ page {
   display: flex;
   align-items: center;
   padding: 24rpx 20rpx;
-  background-color: #1a1a2e;
+  background-color: #e9e3d6;
   border-radius: 12rpx;
   margin-bottom: 16rpx;
 }
@@ -255,7 +255,7 @@ page {
   align-items: center;
   justify-content: center;
   font-size: 24rpx;
-  color: #4fc3f7;
+  color: #b31921;
   background-color: rgba(79, 195, 247, 0.1);
   border-radius: 6rpx;
 }
@@ -292,7 +292,7 @@ page {
 
 .school-abbr {
   font-size: 24rpx;
-  color: #4fc3f7;
+  color: #b31921;
 }
 
 .school-admin {
@@ -313,7 +313,7 @@ page {
 
 .action-btn.edit {
   background-color: rgba(79, 195, 247, 0.1);
-  color: #4fc3f7;
+  color: #b31921;
 }
 
 .action-btn.delete {
@@ -334,14 +334,14 @@ page {
   left: 0;
   right: 0;
   padding: 30rpx;
-  background-color: #1a1a2e;
-  border-top: 2rpx solid #2d3a5a;
+  background-color: #e9e3d6;
+  border-top: 2rpx solid #111111;
 }
 
 .back-btn {
   height: 88rpx;
-  background-color: #4fc3f7;
-  color: #1a1a2e;
+  background-color: #b31921;
+  color: #e9e3d6;
   font-size: 30rpx;
   font-weight: bold;
   border-radius: 16rpx;
@@ -374,10 +374,10 @@ page {
 .modal-content {
   position: relative;
   width: 600rpx;
-  background-color: #16213e;
+  background-color: #f7f4ec;
   border-radius: 24rpx;
   padding: 40rpx;
-  border: 2rpx solid #2d3a5a;
+  border: 2rpx solid #111111;
 }
 
 .modal-title {
@@ -402,8 +402,8 @@ page {
 .form-input {
   width: 100%;
   height: 80rpx;
-  background-color: #1a1a2e;
-  border: 2rpx solid #2d3a5a;
+  background-color: #e9e3d6;
+  border: 2rpx solid #111111;
   border-radius: 12rpx;
   padding: 0 20rpx;
   font-size: 28rpx;
@@ -413,7 +413,7 @@ page {
 
 .form-tip {
   font-size: 22rpx;
-  color: #4fc3f7;
+  color: #b31921;
   margin-top: 8rpx;
   display: block;
 }
@@ -436,17 +436,17 @@ page {
 }
 
 .modal-btn.cancel {
-  background-color: #2d3a5a;
+  background-color: #111111;
   color: #888888;
 }
 
 .modal-btn.confirm {
-  background-color: #4fc3f7;
-  color: #1a1a2e;
+  background-color: #b31921;
+  color: #e9e3d6;
 }
 
 .suggestion-section {
-  background-color: #16213e;
+  background-color: #f7f4ec;
   border-radius: 16rpx;
   margin-bottom: 30rpx;
   overflow: hidden;
@@ -457,11 +457,11 @@ page {
 }
 
 .suggestion-item {
-  background-color: #1a1a2e;
+  background-color: #e9e3d6;
   border-radius: 12rpx;
   padding: 20rpx;
   margin-bottom: 16rpx;
-  border: 2rpx solid #2d3a5a;
+  border: 2rpx solid #111111;
 }
 
 .suggestion-item:last-child {
@@ -489,9 +489,9 @@ page {
 
 .suggestion-contact {
   font-size: 24rpx;
-  color: #4fc3f7;
+  color: #b31921;
   padding-top: 12rpx;
-  border-top: 1rpx solid #2d3a5a;
+  border-top: 1rpx solid #111111;
 }
 
 .contact-label {
@@ -499,6 +499,188 @@ page {
 }
 
 .contact-value {
-  color: #4fc3f7;
+  color: #b31921;
 }
 
+/* Poster newspaper redesign */
+page {
+  background:
+    radial-gradient(circle, rgba(0, 0, 0, 0.036) 0, rgba(0, 0, 0, 0.036) 0.7px, transparent 1.1px),
+    repeating-linear-gradient(0deg, rgba(0, 0, 0, 0.018) 0, rgba(0, 0, 0, 0.018) 1rpx, transparent 1rpx, transparent 6rpx),
+    #e9e3d6;
+  color: #111111;
+}
+
+.container {
+  padding: 24rpx 20rpx 154rpx;
+}
+
+.header {
+  align-items: stretch;
+  margin-bottom: 20rpx;
+  padding: 16rpx 0 12rpx;
+  border-top: 5rpx solid #111111;
+  border-bottom: 3rpx solid #111111;
+}
+
+.title {
+  color: #111111;
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: 50rpx;
+  font-weight: 900;
+  line-height: 1;
+  text-align: left;
+}
+
+.subtitle {
+  color: #b31921;
+  font-weight: 900;
+}
+
+.quick-entry,
+.stats-section,
+.school-section,
+.suggestion-section,
+.global-stats,
+.stats-card,
+.school-item,
+.suggestion-item,
+.modal-content {
+  border-radius: 0;
+  border: 3rpx solid #111111;
+  background:
+    repeating-linear-gradient(0deg, rgba(0, 0, 0, 0.014) 0, rgba(0, 0, 0, 0.014) 1rpx, transparent 1rpx, transparent 6rpx),
+    #f7f4ec;
+  box-shadow: 6rpx 6rpx 0 rgba(0, 0, 0, 0.16);
+}
+
+.quick-entry,
+.stats-section,
+.school-section,
+.suggestion-section {
+  margin-bottom: 20rpx;
+  padding: 20rpx;
+  overflow: visible;
+}
+
+.quick-entry {
+  border-left: 18rpx solid #b31921;
+}
+
+.quick-entry-title,
+.section-title {
+  color: #111111;
+  font-family: Georgia, 'Times New Roman', serif;
+  font-weight: 900;
+}
+
+.section-title::before {
+  content: '';
+  display: inline-block;
+  width: 18rpx;
+  height: 18rpx;
+  margin-right: 8rpx;
+  background: #b31921;
+}
+
+.quick-entry-btn {
+  border-radius: 0;
+  border: 2rpx solid #111111;
+  background: #f7f4ec;
+}
+
+.quick-entry-text,
+.quick-entry-arrow,
+.add-btn,
+.refresh-btn,
+.school-abbr,
+.school-admin,
+.global-stats-value,
+.stats-value,
+.suggestion-contact,
+.contact-value {
+  color: #b31921;
+  font-weight: 900;
+}
+
+.global-stats-value,
+.stats-value {
+  font-family: Georgia, 'Times New Roman', serif;
+}
+
+.global-stats-label,
+.stats-label,
+.suggestion-time,
+.contact-label,
+.form-label,
+.form-tip {
+  color: #333333;
+  font-weight: 800;
+}
+
+.global-stats-divider,
+.stats-divider {
+  background: #111111;
+}
+
+.school-name,
+.stats-school-name,
+.suggestion-content,
+.modal-title {
+  color: #111111;
+  font-weight: 900;
+}
+
+.order-btn,
+.action-btn,
+.modal-btn.cancel {
+  border-radius: 0;
+  border: 2rpx solid #111111;
+  color: #111111;
+  background: #f7f4ec;
+}
+
+.action-btn.delete {
+  color: #b31921;
+}
+
+.add-btn,
+.refresh-btn,
+.modal-btn.confirm,
+.back-btn {
+  border-radius: 0;
+  color: #ffffff;
+  background: #b31921;
+  box-shadow: 4rpx 4rpx 0 #111111;
+}
+
+.form-input {
+  border-radius: 0;
+  border: 2rpx solid #111111;
+  color: #111111;
+  background: #fffdf7;
+}
+
+.bottom-actions {
+  background:
+    repeating-linear-gradient(0deg, rgba(0, 0, 0, 0.016) 0, rgba(0, 0, 0, 0.016) 1rpx, transparent 1rpx, transparent 6rpx),
+    #e9e3d6;
+  border-top: 3rpx solid #111111;
+}
+
+.back-btn {
+  width: 100%;
+}
+
+.modal-mask {
+  background: rgba(0, 0, 0, 0.55);
+}
+
+.modal-content {
+  background: #f7f4ec;
+}
+
+.collapse-arrow,
+.order-num {
+  color: #111111;
+}

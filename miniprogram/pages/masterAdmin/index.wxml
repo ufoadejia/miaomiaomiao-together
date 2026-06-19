@@ -9,7 +9,7 @@
     <view class="quick-entry-title">快速入口</view>
     <view class="quick-entry-btn" bindtap="goToBistuAdmin">
       <text class="quick-entry-text">管理北京信息科技大学</text>
-      <text class="quick-entry-arrow">→</text>
+      <text class="quick-entry-arrow">OPEN</text>
     </view>
   </view>
 

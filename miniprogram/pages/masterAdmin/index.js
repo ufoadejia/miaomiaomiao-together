@@ -1,3 +1,5 @@
+const api = require('../../utils/api')
+
 Page({
   data: {
     schoolList: [],
@@ -46,10 +48,7 @@ Page({
     wx.showLoading({ title: '加载中...' })
     
     try {
-      const res = await wx.cloud.callFunction({
-        name: 'canteenService',
-        data: { action: 'getSchools' }
-      })
+      const res = await api.callFunction({ action: 'getSchools' })
       
       if (res.result && res.result.success) {
         this.setData({ schoolList: res.result.data || [] })
@@ -64,10 +63,7 @@ Page({
 
   async loadAllSchoolStats() {
     try {
-      const res = await wx.cloud.callFunction({
-        name: 'canteenService',
-        data: { action: 'getAllSchoolStats' }
-      })
+      const res = await api.callFunction({ action: 'getAllSchoolStats' })
       
       if (res.result && res.result.success) {
         this.setData({ 
@@ -82,10 +78,7 @@ Page({
 
   async loadSuggestions() {
     try {
-      const res = await wx.cloud.callFunction({
-        name: 'canteenService',
-        data: { action: 'getSuggestions' }
-      })
+      const res = await api.callFunction({ action: 'getSuggestions' })
       
       if (res.result && res.result.success) {
         const suggestions = (res.result.data || []).map(item => {
@@ -203,15 +196,12 @@ Page({
         admin: admin ? admin.trim() : ''
       }
       
-      const res = await wx.cloud.callFunction({
-        name: 'canteenService',
-        data: { action, data }
-      })
+      const res = await api.callFunction({ action, data })
       
       if (res.result && res.result.success) {
         if (!this.data.isEditing) {
           const schoolName = name.trim()
-          const copyText = `🎉 ${schoolName}已成功开通！
+          const copyText = `${schoolName}已成功开通！
 
 学校名称：${schoolName}
 英文简称：${abbr.trim()}
@@ -220,13 +210,13 @@ Page({
 
 小程序搜索"一起哈基米"即可使用，点击标题栏切换学校即可选择${schoolName}。
 管理后台：单击六下标题"XXer今天吃什么"进入。
-⚠️ 注意：学校开通后需重新进入小程序，才可以在学校列表内找到。
+注意：学校开通后需重新进入小程序，才可以在学校列表内找到。
 
-📖 管理教程：
-1️⃣ 添加分类：点击"+ 添加食堂"，可创建如"一食堂"、"二食堂"、"校外美食街"等分类
-2️⃣ 添加子分类：点击分类名称展开，添加楼层或区域，如"一楼"、"二楼"、"东区"、"西区"
-3️⃣ 添加店铺：在每个楼层/区域下添加具体店铺名称
-💡 提示：分类名称完全自定义，"食堂-楼层-店铺"只是层层细化的结构，可灵活调整为"校区-区域-店铺"等`
+管理教程：
+1. 添加分类：点击"+ 添加食堂"，可创建如"一食堂"、"二食堂"、"校外美食街"等分类
+2. 添加子分类：点击分类名称展开，添加楼层或区域，如"一楼"、"二楼"、"东区"、"西区"
+3. 添加店铺：在每个楼层/区域下添加具体店铺名称
+提示：分类名称完全自定义，"食堂-楼层-店铺"只是层层细化的结构，可灵活调整为"校区-区域-店铺"等`
           wx.setClipboardData({
             data: copyText,
             success: () => {
@@ -261,13 +251,10 @@ Page({
           wx.showLoading({ title: '删除中...' })
           
           try {
-            const result = await wx.cloud.callFunction({
-              name: 'canteenService',
-              data: {
+            const result = await api.callFunction({
                 action: 'deleteSchool',
                 data: { schoolId: school._id }
-              }
-            })
+              })
             
             if (result.result && result.result.success) {
               wx.showToast({ title: '删除成功', icon: 'success' })
@@ -326,13 +313,10 @@ Page({
     const schoolOrders = this.data.schoolList.map(s => s._id)
     
     try {
-      await wx.cloud.callFunction({
-        name: 'canteenService',
-        data: {
+      await api.callFunction({
           action: 'updateSchoolOrder',
           data: { schoolOrders }
-        }
-      })
+        })
     } catch (e) {
       console.log('保存排序失败', e)
     }

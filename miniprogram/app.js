@@ -1,17 +1,10 @@
-// app.js
+"use strict";
+// app.ts
 App({
-  onLaunch: function () {
-    this.globalData = {
-     
-      env: "cloud1-9gk8zv0nc476eda3",
-    };
-    if (!wx.cloud) {
-      console.error("请使用 2.2.3 或以上的基础库以使用云能力");
-    } else {
-      wx.cloud.init({
-        env: this.globalData.env,
-        traceUser: true,
-      });
-    }
-  },
+    globalData: {
+        apiBaseUrl: 'https://tantanzhang.cn/dish-api',
+    },
+    onLaunch() {
+        wx.setStorageSync('lastOpenAt', Date.now());
+    },
 });

@@ -1,6 +1,6 @@
 <view class="container">
   <view class="header">
-    <text class="title">提建议</text>
+    <text class="title">读者来信</text>
   </view>
 
   <view class="form">
@@ -31,7 +31,7 @@
     <button class="submit-btn {{!canSubmit ? 'disabled' : ''}}" 
             bindtap="submitSuggestion"
             disabled="{{!canSubmit || submitting}}">
-      {{submitting ? '提交中...' : '提交'}}
+      {{submitting ? '投递中...' : '投递来信'}}
     </button>
   </view>
 </view>

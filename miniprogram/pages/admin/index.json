@@ -1,6 +1,6 @@
 {
-  "navigationBarTitleText": "店铺管理",
-  "navigationBarBackgroundColor": "#1a1a2e",
-  "navigationBarTextStyle": "white",
+  "navigationBarTitleText": "后台管理",
+  "navigationBarBackgroundColor": "#eee9dd",
+  "navigationBarTextStyle": "black",
   "usingComponents": {}
 }

@@ -1,0 +1,16 @@
+[Unit]
+Description=Dish Rank API Server
+After=network.target postgresql.service
+
+[Service]
+Type=simple
+User=dishrank
+Group=dishrank
+WorkingDirectory=/opt/miaomiaomiao-together/server
+EnvironmentFile=/opt/miaomiaomiao-together/server/.env
+ExecStart=/usr/bin/env npm start
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target

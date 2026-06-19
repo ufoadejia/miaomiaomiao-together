@@ -1,0 +1,117 @@
+<view class="page">
+  <view class="cover">
+    <view class="cover-copy">
+      <text class="kicker">CAMPUS FLAVOR GUIDE</text>
+      <text class="title">食堂风味榜</text>
+      <text class="school">{{schoolName}}</text>
+    </view>
+    <view class="cover-score" wx:if="{{rankings.length}}">
+      <text class="score">{{rankings[0].scoreText}}</text>
+      <text class="name">{{rankings[0].name}}</text>
+    </view>
+  </view>
+
+  <view class="panel-tabs">
+    <view class="panel-tab {{activePanel === 'rank' ? 'active' : ''}}" data-panel="rank" bindtap="switchPanel">榜单</view>
+    <view class="panel-tab {{activePanel === 'upload' ? 'active' : ''}}" data-panel="upload" bindtap="switchPanel">上传</view>
+  </view>
+
+  <view class="notice" wx:if="{{message}}">{{message}}</view>
+
+  <view wx:if="{{activePanel === 'rank'}}" class="rank-section">
+    <view class="dish-row featured" wx:if="{{rankings.length}}" data-id="{{rankings[0].id}}">
+      <view class="rank-number">01</view>
+      <image class="dish-image hero-image" src="{{rankings[0].imageUrl}}" mode="aspectFill" />
+      <view class="dish-copy">
+        <text class="dish-headline">{{rankings[0].headlineText}}</text>
+        <text class="dish-name">{{rankings[0].name}}</text>
+        <text class="dish-place">{{rankings[0].placeText}}</text>
+        <text class="dish-desc">{{rankings[0].description || '校园食堂今日上榜菜品'}}</text>
+      </view>
+      <view class="rating-line">
+        <text class="dish-score">{{rankings[0].scoreText}}</text>
+        <text class="rating-count">{{rankings[0].ratingText}}</text>
+      </view>
+      <view class="stars">
+        <text class="vote-label">投票</text>
+        <view wx:for="{{[1,2,3,4,5]}}" wx:key="*this" class="star" data-id="{{rankings[0].id}}" data-score="{{item}}" bindtap="rateDish">{{item}}</view>
+      </view>
+    </view>
+
+    <block wx:for="{{rankings}}" wx:for-item="dish" wx:for-index="dishIndex" wx:key="id">
+      <view class="dish-row" wx:if="{{dishIndex > 0}}">
+        <view class="rank-number">{{dish.rank < 10 ? '0' + dish.rank : dish.rank}}</view>
+        <image class="dish-image" src="{{dish.imageUrl}}" mode="aspectFill" />
+        <view class="dish-copy">
+          <text class="dish-headline">{{dish.headlineText}}</text>
+          <text class="dish-name">{{dish.name}}</text>
+          <text class="dish-place">{{dish.placeText}}</text>
+          <text class="dish-desc">{{dish.description || '等待更多同学补充风味记录'}}</text>
+        </view>
+        <view class="rating-line">
+          <text class="dish-score">{{dish.scoreText}}</text>
+          <text class="rating-count">{{dish.ratingText}}</text>
+        </view>
+        <view class="stars">
+          <text class="vote-label">投票</text>
+          <view wx:for="{{[1,2,3,4,5]}}" wx:for-item="score" wx:key="*this" class="star" data-id="{{dish.id}}" data-score="{{score}}" bindtap="rateDish">{{score}}</view>
+        </view>
+      </view>
+    </block>
+
+    <view class="empty" wx:if="{{!loading && rankings.length === 0}}">
+      <text>暂无菜品</text>
+    </view>
+  </view>
+
+  <view wx:if="{{activePanel === 'upload'}}" class="upload-panel">
+    <view class="form-card">
+      <text class="form-title">上传一道菜</text>
+
+      <view class="field">
+        <text class="label">菜品名称</text>
+        <input value="{{form.name}}" data-field="name" bindinput="onFormInput" placeholder="例如 黄焖鸡米饭" maxlength="40" />
+      </view>
+
+      <view class="field">
+        <text class="label">分类</text>
+        <input value="{{form.categoryName}}" data-field="categoryName" bindinput="onFormInput" placeholder="盖饭、粉面、饮品" maxlength="24" />
+        <scroll-view wx:if="{{categories.length}}" scroll-x class="category-scroll" enhanced show-scrollbar="{{false}}">
+          <view class="category-list">
+            <view class="category-chip" wx:for="{{categories}}" wx:key="id" data-name="{{item.name}}" bindtap="chooseCategory">{{item.name}}</view>
+          </view>
+        </scroll-view>
+      </view>
+
+      <view class="field-grid">
+        <view class="field">
+          <text class="label">店铺</text>
+          <input value="{{form.shopName}}" data-field="shopName" bindinput="onFormInput" placeholder="窗口或店名" maxlength="40" />
+        </view>
+        <view class="field">
+          <text class="label">楼层</text>
+          <input value="{{form.floorName}}" data-field="floorName" bindinput="onFormInput" placeholder="一楼" maxlength="20" />
+        </view>
+      </view>
+
+      <view class="field">
+        <text class="label">描述</text>
+        <textarea value="{{form.description}}" data-field="description" bindinput="onFormInput" placeholder="口味、份量、适合什么时候吃" maxlength="160" show-confirm-bar="{{false}}" />
+      </view>
+
+      <view class="image-picker" bindtap="chooseImage">
+        <image wx:if="{{imagePath}}" class="preview-image" src="{{imagePath}}" mode="aspectFill" />
+        <view wx:else class="image-empty">
+          <text class="image-title">选择图片</text>
+          <text class="image-note">单图 5MB 内</text>
+        </view>
+      </view>
+      <view class="image-meta" wx:if="{{imageName}}">
+        <text>{{imageName}}</text>
+        <text bindtap="clearImage">移除</text>
+      </view>
+
+      <button class="submit-btn" loading="{{submitting}}" disabled="{{submitting}}" bindtap="submitDish">提交菜品</button>
+    </view>
+  </view>
+</view>

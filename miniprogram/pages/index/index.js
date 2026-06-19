@@ -1,3 +1,5 @@
+const api = require('../../utils/api')
+
 let videoAd = null
 let lastAdShowTime = 0
 
@@ -132,17 +134,14 @@ Page({
 
   async loadSchools() {
     try {
-      const res = await wx.cloud.callFunction({
-        name: 'canteenService',
-        data: { action: 'getSchools' }
-      })
-      
+      const res = await api.callFunction({ action: 'getSchools' })
+
       let schoolList = []
-      
+
       if (res.result && res.result.success && res.result.data) {
         schoolList = res.result.data
       }
-      
+
       const bistuSchool = schoolList.find(s => s._id === 'bistu')
       if (!bistuSchool) {
         schoolList.unshift({
@@ -152,9 +151,9 @@ Page({
           admin: '西风漂流'
         })
       }
-      
+
       this.setData({ schoolList })
-      
+
       const savedSchool = wx.getStorageSync('selectedSchool')
       if (savedSchool) {
         const existSchool = schoolList.find(s => s._id === savedSchool._id)
@@ -167,7 +166,7 @@ Page({
           return
         }
       }
-      
+
       const defaultSchool = schoolList.find(s => s._id === 'bistu')
       if (defaultSchool) {
         this.setData({ currentSchool: defaultSchool }, () => {
@@ -183,7 +182,7 @@ Page({
   },
 
   showSchoolPicker() {
-    this.setData({ 
+    this.setData({
       showSchoolPickerModal: true,
       schoolSearchKeyword: '',
       filteredSchoolList: this.data.schoolList,
@@ -193,7 +192,7 @@ Page({
   },
 
   closeSchoolPicker() {
-    this.setData({ 
+    this.setData({
       showSchoolPickerModal: false,
       schoolSearchKeyword: ''
     })
@@ -202,21 +201,21 @@ Page({
   onSchoolSearchInput(e) {
     const keyword = e.detail.value.trim().toLowerCase()
     this.setData({ schoolSearchKeyword: keyword })
-    
+
     if (!keyword) {
-      this.setData({ 
+      this.setData({
         filteredSchoolList: this.data.schoolList,
         displaySchoolList: this.data.schoolList,
         isSchoolListEmpty: this.data.schoolList.length === 0
       })
       return
     }
-    
-    const filtered = this.data.schoolList.filter(school => 
+
+    const filtered = this.data.schoolList.filter(school =>
       school.name.toLowerCase().includes(keyword) ||
       (school.abbr && school.abbr.toLowerCase().includes(keyword))
     )
-    this.setData({ 
+    this.setData({
       filteredSchoolList: filtered,
       displaySchoolList: filtered,
       isSchoolListEmpty: filtered.length === 0
@@ -249,16 +248,13 @@ Page({
   async loadCanteenData() {
     const schoolId = this.data.currentSchool._id
     if (!schoolId) return
-    
+
     try {
-      const res = await wx.cloud.callFunction({
-        name: 'canteenService',
-        data: { 
+      const res = await api.callFunction({
           action: 'getCanteenData',
           schoolId: schoolId
-        }
-      })
-      
+        })
+
       if (res.result && res.result.success && res.result.data) {
         this.setData({ canteenData: res.result.data })
         this.calculateShopCounts()
@@ -275,7 +271,7 @@ Page({
     const canteenData = this.data.canteenData
     let total = 0
     const counts = []
-    
+
     canteenData.forEach(canteen => {
       let canteenTotal = 0
       const floors = canteen.floors || []
@@ -289,7 +285,7 @@ Page({
         count: canteenTotal
       })
     })
-    
+
     this.setData({
       totalShopCount: total,
       canteenShopCounts: counts
@@ -299,16 +295,13 @@ Page({
   async initCanteenData() {
     const schoolId = this.data.currentSchool._id
     if (!schoolId) return
-    
+
     try {
-      const res = await wx.cloud.callFunction({
-        name: 'canteenService',
-        data: { 
+      const res = await api.callFunction({
           action: 'initCanteenData',
           schoolId: schoolId
-        }
-      })
-      
+        })
+
       if (res.result && res.result.success) {
         await this.loadCanteenData()
       }
@@ -319,11 +312,8 @@ Page({
 
   async loadStats() {
     try {
-      const res = await wx.cloud.callFunction({
-        name: 'canteenService',
-        data: { action: 'getStats' }
-      })
-      
+      const res = await api.callFunction({ action: 'getStats' })
+
       if (res.result && res.result.success) {
         this.setData({ stats: res.result.data })
       }
@@ -335,16 +325,13 @@ Page({
   async loadAnnouncement() {
     const schoolId = this.data.currentSchool._id
     if (!schoolId) return
-    
+
     try {
-      const res = await wx.cloud.callFunction({
-        name: 'canteenService',
-        data: { 
+      const res = await api.callFunction({
           action: 'getAnnouncement',
           schoolId: schoolId
-        }
-      })
-      
+        })
+
       if (res.result && res.result.success) {
         this.setData({ announcement: res.result.data })
       }
@@ -356,14 +343,11 @@ Page({
   async incrementStats() {
     const schoolId = this.data.currentSchool._id
     try {
-      const res = await wx.cloud.callFunction({
-        name: 'canteenService',
-        data: { 
+      const res = await api.callFunction({
           action: 'incrementStats',
           schoolId: schoolId
-        }
-      })
-      
+        })
+
       if (res.result && res.result.success && res.result.data) {
         this.setData({ stats: res.result.data })
       }
@@ -375,16 +359,13 @@ Page({
   async loadReputationStats() {
     const schoolId = this.data.currentSchool._id
     if (!schoolId) return
-    
+
     try {
-      const res = await wx.cloud.callFunction({
-        name: 'canteenService',
-        data: {
+      const res = await api.callFunction({
           action: 'getReputationStats',
           schoolId: schoolId
-        }
-      })
-      
+        })
+
       if (res.result && res.result.success) {
         this.setData({ reputationStats: res.result.data })
       }
@@ -396,18 +377,15 @@ Page({
   async addToReputationShop() {
     const schoolId = this.data.currentSchool._id
     const shopName = this.data.result.shop
-    
+
     if (!schoolId || !shopName) return
-    
+
     try {
-      const res = await wx.cloud.callFunction({
-        name: 'canteenService',
-        data: {
+      const res = await api.callFunction({
           action: 'addToReputationShop',
           schoolId: schoolId,
           data: { shopName: shopName }
-        }
-      })
+        })
       if (res.result && res.result.success && res.result.data) {
         this.setData({ reputationStats: res.result.data })
       }
@@ -420,22 +398,22 @@ Page({
     const now = Date.now()
     const fiveMinutes = 5 * 60 * 1000
     const timeSinceLastAd = now - lastAdShowTime
-    
+
     if (timeSinceLastAd < fiveMinutes) {
       this.setData({ showReputationModal: true })
       return
     }
-    
+
     if (Math.random() > 0.5) {
       this.setData({ showReputationModal: true })
       return
     }
-    
+
     if (!videoAd) {
       this.setData({ showReputationModal: true })
       return
     }
-    
+
     videoAd.show().catch(() => {
       videoAd.load()
         .then(() => videoAd.show())
@@ -453,7 +431,7 @@ Page({
   onTitleTap() {
     const now = Date.now()
     const timeDiff = now - this.data.lastTapTime
-    
+
     if (timeDiff < 2000) {
       this.setData({
         titleTapCount: this.data.titleTapCount + 1
@@ -463,9 +441,9 @@ Page({
         titleTapCount: 1
       })
     }
-    
+
     this.setData({ lastTapTime: now })
-    
+
     if (this.data.titleTapCount >= 6) {
       this.setData({
         titleTapCount: 0,
@@ -477,7 +455,7 @@ Page({
   onCanteenChange(e) {
     const canteen = e.currentTarget.dataset.canteen
     let selectedCanteens = [...this.data.selectedCanteens]
-    
+
     if (canteen === 'all') {
       if (selectedCanteens.includes('all')) {
         return
@@ -495,7 +473,7 @@ Page({
         selectedCanteens.push(canteen)
       }
     }
-    
+
     this.setData({ selectedCanteens })
   },
 
@@ -512,18 +490,15 @@ Page({
 
   async confirmPassword() {
     try {
-      const res = await wx.cloud.callFunction({
-        name: 'canteenService',
-        data: {
+      const res = await api.callFunction({
           action: 'verifyPassword',
           data: { password: this.data.passwordInput }
-        }
-      })
-      
+        })
+
       if (res.result && res.result.success) {
         const { role, schoolId, schoolName } = res.result.data
         this.closePasswordModal()
-        
+
         if (role === 'master') {
           wx.navigateTo({
             url: '/pages/masterAdmin/index'
@@ -554,13 +529,13 @@ Page({
     const canteenData = this.data.canteenData
     const selectedCanteens = this.data.selectedCanteens
     const lotteryHistory = this.data.lotteryHistory
-    
+
     if (!canteenData || canteenData.length === 0) {
       return null
     }
-    
+
     const isAllSelected = selectedCanteens.includes('all')
-    
+
     const validItems = []
     canteenData.forEach(canteen => {
       if (!isAllSelected && !selectedCanteens.includes(canteen._id)) {
@@ -579,29 +554,29 @@ Page({
         })
       })
     })
-    
+
     if (validItems.length === 0) {
       return null
     }
-    
+
     const maxCount = Math.max(...validItems.map(item => lotteryHistory[item.key] || 0), 1)
-    
+
     const weightedItems = validItems.map(item => {
       const count = lotteryHistory[item.key] || 0
       const weight = Math.pow(maxCount - count + 1, 2)
       return { ...item, weight }
     })
-    
+
     const totalWeight = weightedItems.reduce((sum, item) => sum + item.weight, 0)
     let random = Math.random() * totalWeight
-    
+
     for (const item of weightedItems) {
       random -= item.weight
       if (random <= 0) {
         return item
       }
     }
-    
+
     return weightedItems[weightedItems.length - 1]
   },
 
@@ -619,7 +594,7 @@ Page({
     const selectedCanteens = this.data.selectedCanteens
     const isAllSelected = selectedCanteens.includes('all')
     let hasValidShop = false
-    
+
     for (const canteen of this.data.canteenData) {
       if (!isAllSelected && !selectedCanteens.includes(canteen._id)) {
         continue
@@ -643,7 +618,7 @@ Page({
       return
     }
 
-    this.setData({ 
+    this.setData({
       isRolling: true,
       hasResult: false,
       showResultModal: false
@@ -658,20 +633,20 @@ Page({
       while (lastItem && randomResult && randomResult.shop === lastItem.shop) {
         randomResult = this.getRandomItem()
       }
-      
+
       if (!randomResult) {
         this.setData({ isRolling: false })
         wx.showToast({ title: '数据加载异常，请重试', icon: 'none' })
         return
       }
-      
+
       lastItem = randomResult
       this.setData({
         rollingData: randomResult
       })
 
       rollCount++
-      
+
       if (rollCount < totalRolls) {
         setTimeout(roll, 80)
       } else {
@@ -683,7 +658,7 @@ Page({
         wx.vibrateShort({ type: 'medium' })
         this.incrementStats()
         this.saveLotteryResult(randomResult.key)
-        
+
         this.setData({ showResultModal: true })
       }
     }
@@ -721,7 +696,7 @@ Page({
     const { canteen, floor, shop } = this.data.result
     const schoolAbbr = this.data.currentSchool.abbr || 'BISTU'
     const text = `【${schoolAbbr}er今天吃什么】\n食堂：${canteen}\n楼层：${floor}\n店铺：${shop}\n\n今天就去吃「${shop}」吧！`
-    
+
     wx.setClipboardData({
       data: text,
       success: () => {
@@ -754,6 +729,21 @@ Page({
   goToSuggestion() {
     wx.navigateTo({
       url: '/pages/suggestion/index'
+    })
+  },
+
+  goToDishes() {
+    const schoolId = this.data.currentSchool._id || 'bistu'
+    const schoolName = encodeURIComponent(this.data.currentSchool.name || '北京信息科技大学')
+    wx.navigateTo({
+      url: `/pages/dishes/index?schoolId=${schoolId}&schoolName=${schoolName}`
+    })
+  },
+
+  goToNewspaper() {
+    const schoolName = encodeURIComponent(this.data.currentSchool.name || '北京信息科技大学')
+    wx.navigateTo({
+      url: `/pages/newspaper/index?schoolName=${schoolName}`
     })
   }
 })

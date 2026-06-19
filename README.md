@@ -5,22 +5,22 @@
 一个帮助解决"今天吃什么"选择困难症的微信小程序
 
 [![微信小程序](https://img.shields.io/badge/平台-微信小程序-green.svg)](https://developers.weixin.qq.com/miniprogram/dev/framework/)
-[![云开发](https://img.shields.io/badge/后端-微信云开发-blue.svg)](https://developers.weixin.qq.com/miniprogram/dev/wxcloud/basis/getting-started.html)
+[![后端](https://img.shields.io/badge/后端-Fastify%20%2B%20Prisma-blue.svg)](./server)
 
 </div>
 
 ## 项目简介
 
-"今天吃什么"是一个基于微信小程序云开发的应用，旨在帮助高校学生解决每天面对食堂众多选择时的困扰。通过随机抽取的方式，让用户快速决定用餐地点，同时提供人气榜单、统计数据等功能，让用餐选择更加有趣。
+"今天吃什么"是一个微信小程序应用，旨在帮助高校学生解决每天面对食堂众多选择时的困扰。当前 fork 已迁移为微信小程序原生前端 + Fastify/Prisma/Postgres 后端，主界面采用纸质小报阅读版式，支持随机推荐、菜品投稿、评分榜单和学校后台管理。
 
 ### 核心功能
 
 - 随机抽取 - 智能随机选择食堂、楼层和店铺，避免选择困难
 - 多学校支持 - 支持多个学校独立使用，数据互不干扰
-- 人气榜单 - 统计用户选择，展示最受欢迎的店铺
-- 使用统计 - 实时显示总使用次数和今日使用次数
+- 人气榜单 - 根据真实评分动态展示最受欢迎的菜品
+- 菜品投稿 - 用户登录后可上传菜品和图片，后台审核后上架
 - 公告系统 - 学校管理员可发布实时公告
-- 店铺评分 - 用户可对店铺进行评分（开发中）
+- 菜品评分 - 用户登录后可对菜品评分，榜单实时更新
 - 权限管理 - 支持超级管理员和学校管理员分级管理
 
 ## 功能展示
@@ -48,56 +48,50 @@
 ## 技术栈
 
 - **前端**：微信小程序原生框架
-- **后端**：微信云开发
-  - 云函数
-  - 云数据库
-  - 云存储
+- **后端**：Fastify + Prisma + Postgres
+  - `/dish-api/` 统一接口
+  - `/dish-uploads/` 图片静态访问
+  - 兼容原小程序食堂层级数据
 - **UI组件**：原生组件 + 自定义组件
 
 ## 项目结构
 
 ```
-miniprogram-10/
-├── miniprogram/              # 小程序前端代码
-│   ├── pages/               # 页面
-│   │   ├── index/          # 首页（主功能页）
-│   │   ├── admin/          # 学校管理员页
-│   │   ├── masterAdmin/    # 超级管理员页
-│   │   └── suggestion/     # 建议反馈页
-│   ├── images/             # 图片资源
-│   ├── utils/              # 工具函数
-│   ├── app.js              # 小程序入口
-│   ├── app.json            # 小程序配置
-│   └── app.wxss            # 全局样式
-├── cloudfunctions/          # 云函数
-│   └── canteenService/     # 食堂服务云函数
-│       ├── index.js        # 云函数入口
-│       └── package.json    # 依赖配置
-├── project.config.json      # 项目配置
-└── README.md               # 项目说明
+miaomiaomiao-together/
+├── miniprogram/              # 微信小程序原生前端
+│   ├── pages/newspaper/      # 纸质小报首页、投稿、榜单、随机推荐
+│   ├── pages/auth/register/  # 微信身份/个人资料
+│   ├── pages/admin/          # 学校后台
+│   ├── utils/api.js          # 统一后端 API 调用
+│   ├── app.js
+│   ├── app.json
+│   └── app.wxss
+├── server/                   # Fastify + Prisma + Postgres 后端
+├── web/                      # Web 辅助展示
+├── cloudfunctions/           # 原项目迁移参考，不再作为运行后端
+├── project.config.json
+└── README.md
 ```
 
 ## 数据库设计
 
-### 集合说明
+### 主要数据表
 
-| 集合名 | 说明 |
+| 表名 | 说明 |
 |--------|------|
-| `schools` | 学校信息表 |
-| `canteen` | 食堂信息表（含楼层和店铺） |
-| `stats` | 全局统计表 |
-| `schoolStats` | 学校统计表 |
-| `reputationShops` | 人气店铺表 |
-| `config` | 配置表（公告等） |
-| `shopStats` | 店铺统计表 |
-| `userRatings` | 用户评分表 |
+| `School` | 学校信息与学校管理员密码哈希 |
+| `Canteen` | 食堂信息，`floors` JSON 保存楼层和窗口 |
+| `Dish` | 菜品、图片、上架状态、聚合评分 |
+| `Rating` | 用户对菜品的评分 |
+| `Category` | 菜品分类 |
+| `Announcement` | 学校公告 |
 
 ## 快速开始
 
 ### 前置要求
 
 - 已注册微信小程序账号
-- 已开通微信云开发服务
+- 可用的 Fastify/Postgres 后端服务
 - 安装微信开发者工具
 
 ### 安装步骤
@@ -114,32 +108,58 @@ miniprogram-10/
    - 选择项目目录
    - 填入你的 AppID
 
-3. **配置云开发环境**
-   - 在微信开发者工具中开通云开发
-   - 创建云开发环境
-   - 在 `project.config.json` 中配置环境ID
+3. **配置生产后端**
+   - 后端默认域名为 `https://tantanzhang.cn/dish-api`
+   - 生产 `.env` 需要配置数据库、JWT、后台密码、微信 AppID/Secret
+   - 微信小程序后台需要配置合法 request/upload/download 域名
 
-4. **部署云函数**
-   ```bash
-   # 上传并部署云函数
-   # 在微信开发者工具中右键 cloudfunctions/canteenService
-   # 选择"上传并部署：云端安装依赖"
-   ```
+4. **初始化数据库**
+   - 先运行 `npm run prisma:import:upstream-hierarchy` 导入学校/食堂/楼层/窗口
+   - 正式上线再运行 `npm run prisma:seed:launch-data` 写入首批菜品、评分和公告
 
-5. **初始化数据库**
-   - 首次运行会自动初始化默认食堂数据
-   - 或通过管理后台手动添加
+## 新后端生产部署与上游层级导入
+
+当前 fork 已加入 Fastify + Prisma + Postgres 后端。生产环境首次部署时，先导入上游仓库的学校/食堂/楼层/店铺层级，再写入首批上线菜品数据，避免小程序公开榜单为空。
+
+```bash
+git clone https://github.com/tantan1hao/miaomiaomiao-together.git /opt/miaomiaomiao-together
+cd /opt/miaomiaomiao-together/server
+npm ci
+cp .env.example .env
+# 编辑 .env：DATABASE_URL、JWT_SECRET、MASTER_PASSWORD、BISTU_ADMIN_PASSWORD、PUBLIC_BASE_URL、WECHAT_APPID、WECHAT_SECRET
+npm run prisma:generate
+npm run prisma:migrate
+npm run prisma:import:upstream-hierarchy
+npm run prisma:seed:launch-data
+npm start
+```
+
+上游层级导入脚本会 upsert `legacyId=bistu` 的学校，以及一食堂/二食堂的完整楼层和店铺 JSON；上线数据脚本会创建首批上架菜品、分类、评分和公告。导入完成后可用以下接口验证：
+
+```bash
+curl http://127.0.0.1:3002/dish-api/health
+curl http://127.0.0.1:3002/dish-api/schools
+curl 'http://127.0.0.1:3002/dish-api/rankings?schoolId=bistu&limit=3'
+curl -X POST http://127.0.0.1:3002/dish-api/miniprogram/call \
+  -H 'content-type: application/json' \
+  -d '{"action":"getCanteenData","schoolId":"bistu"}'
+```
+
+建议用 `systemd` 托管后端进程，并由 Nginx 代理 `/dish-api/` 到 `127.0.0.1:3002`，代理 `/dish-uploads/` 到 `/var/lib/dish-rank/uploads`。模板见 `server/deploy/dish-rank-server.service.example` 和 `server/deploy/nginx-dish.conf.example`。
 
 ### 配置说明
 
-在 `project.config.json` 中修改以下配置：
+在 `project.config.json` 中确认小程序 AppID；生产接口地址在 `miniprogram/app.js` 中配置：
 
 ```json
 {
-  "appid": "你的小程序AppID",
-  "setting": {
-    "your-cloud-env": "你的云开发环境ID"
-  }
+  "appid": "你的小程序AppID"
+}
+```
+
+```js
+globalData: {
+  apiBaseUrl: 'https://tantanzhang.cn/dish-api'
 }
 ```
 
@@ -147,14 +167,14 @@ miniprogram-10/
 
 ### 普通用户
 
-1. 打开小程序，选择所在学校
-2. 点击"开始抽取"按钮
-3. 查看随机抽取的结果
-4. 可选择"再来一次"或"确认选择"
+1. 打开小程序进入小报首页
+2. 上下滑动切换版面
+3. 查看今日头条、风味榜和随机推荐
+4. 设置个人资料后可投稿和评分
 
 ### 管理员
 
-1. 在首页标题处连续点击6次
+1. 在小报标题“明天吃什么日报”处连续点击6次
 2. 输入管理员密码
 3. 进入管理后台进行数据管理
 
@@ -187,9 +207,9 @@ miniprogram-10/
 
 ## 安全说明
 
-- 管理员密码存储在云函数中，前端无法直接访问
+- 管理员密码只保存在服务器环境变量和数据库哈希中，前端无法直接访问
 - 用户评分需登录后才能进行
-- 敏感操作均在云函数中完成
+- 敏感操作均在服务器接口中鉴权完成
 
 ## 贡献指南
 
